@@ -44,7 +44,7 @@ class FlashcardServiceTest {
         testUser = User.builder()
                 .id(1L)
                 .email("test@lingualink.com")
-                .passwordHash("hashedPass")
+                .password("hashedPass")
                 .build();
 
         testCard = Flashcard.builder()
