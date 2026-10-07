@@ -1,79 +1,197 @@
+/* ============================================================
+   AuthLayout — HelloTalk Splash Screen Aesthetics
+   ============================================================ */
+
 .auth-layout {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  background: #F4F6FB;
   position: relative;
   overflow: hidden;
 }
 
-.auth-glow {
+/* Background canvas with subtle decorative organic shapes */
+.auth-canvas-bg {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
+  inset: 0;
   pointer-events: none;
-}
-.auth-glow-1 {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%);
-  top: -100px; left: -100px;
-}
-.auth-glow-2 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
-  bottom: -80px; right: -80px;
+  overflow: hidden;
 }
 
+.auth-canvas-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15;
+}
+.auth-canvas-blob-1 {
+  width: 500px;
+  height: 500px;
+  background: #1B84FF;
+  top: -150px;
+  left: -100px;
+}
+.auth-canvas-blob-2 {
+  width: 450px;
+  height: 450px;
+  background: #FF4B72;
+  bottom: -100px;
+  right: -80px;
+}
+.auth-canvas-blob-3 {
+  width: 400px;
+  height: 400px;
+  background: #FFB800;
+  bottom: 20%;
+  left: -120px;
+}
+
+/* Main Container (Mobile Device Card Container) */
 .auth-container {
   width: 100%;
   max-width: 440px;
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  position: relative;
-  z-index: 1;
 }
 
-.auth-logo {
+/* Auth Phone-like Card */
+.auth-phone-card {
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 36px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0,0,0,0.02);
+  border: 1px solid #EDF2F7;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Splash Hero Banner with the 4 Overlapping Organic Color Shapes */
+.auth-splash-visual {
+  height: 310px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #FFFFFF;
   display: flex;
   align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.auth-logo-icon {
-  width: 40px; height: 40px;
-  background: var(--grad-brand);
-  border-radius: var(--radius-md);
-  display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(124,58,237,0.4);
-}
-.auth-logo-text {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 700;
-  background: var(--grad-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  justify-content: center;
 }
 
-.auth-card {
-  width: 100%;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  padding: 36px 32px;
-  box-shadow: var(--shadow-lg);
+/* Organic Blobs inside the splash */
+.splash-blob {
+  position: absolute;
+  border-radius: 50%;
+  transition: transform 0.4s ease;
+}
+
+.splash-blob-blue {
+  width: 250px;
+  height: 250px;
+  background: #1B84FF;
+  top: -50px;
+  left: -70px;
+  border-radius: 54% 46% 70% 30% / 49% 62% 38% 51%;
+}
+
+.splash-blob-yellow {
+  width: 240px;
+  height: 240px;
+  background: #FFB800;
+  top: 10px;
+  right: -70px;
+  border-radius: 68% 32% 51% 49% / 37% 58% 42% 63%;
+}
+
+.splash-blob-coral {
+  width: 260px;
+  height: 260px;
+  background: #FF4B72;
+  bottom: -70px;
+  left: -60px;
+  border-radius: 41% 59% 38% 62% / 54% 39% 61% 46%;
+}
+
+.splash-blob-green {
+  width: 200px;
+  height: 200px;
+  background: #00D287;
+  bottom: -40px;
+  right: -50px;
+  border-radius: 50% 50% 39% 61% / 57% 43% 57% 43%;
+}
+
+/* Floating speech bubbles with avatars and multilingual greetings */
+.floating-bubble {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #FFFFFF;
+  color: #1E293B;
+  padding: 6px 14px 6px 8px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  z-index: 5;
+  animation: floatBubble 4s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.floating-bubble-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  background: #F1F4F9;
+  flex-shrink: 0;
+  border: 1.5px solid #FFFFFF;
+}
+
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.bubble-pos-1 { top: 25px; left: 16px; animation-delay: 0s; }
+.bubble-pos-2 { top: 32px; right: 20px; animation-delay: 0.7s; }
+.bubble-pos-3 { top: 95px; left: 12px; animation-delay: 1.4s; }
+.bubble-pos-4 { top: 90px; right: 28px; animation-delay: 2.1s; }
+.bubble-pos-5 { top: 155px; left: 24px; animation-delay: 0.9s; }
+.bubble-pos-6 { top: 160px; right: 14px; animation-delay: 1.8s; }
+.bubble-pos-7 { top: 225px; left: 45px; animation-delay: 2.5s; }
+.bubble-pos-8 { top: 220px; right: 38px; animation-delay: 1.2s; }
+
+/* Top Branding in Card */
+.auth-card-header {
+  padding: 24px 24px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Card Body Content */
+.auth-card-body {
+  padding: 20px 28px 32px;
 }
 
 .auth-footer {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-@media (max-width: 480px) {
-  .auth-card { padding: 28px 20px; }
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: #94A3B8;
+  text-align: center;
 }

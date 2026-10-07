@@ -1,337 +1,340 @@
-import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+/* ============================================================
+   PartnersPage — HelloTalk Partner Discovery (Screen 2)
+   ============================================================ */
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useToast } from '../context/ToastContext'
-import { sendConnectionRequest, fetchConnections } from '../api/connections'
+import { sendConnectionRequest } from '../api/connections'
 import './PartnersPage.css'
 
-const SPOTLIGHT_PARTNER = {
-  id: 1,
-  name: 'Lukas',
-  age: 26,
-  city: 'Berlin',
-  country: 'Germany',
-  flag: '🇩🇪',
-  match: 92,
-  teaches: 'German',
-  learns: 'English',
-  verified: true,
-  avatar: 'L',
-  tags: ['Football ⚽', 'Cooking 🍳', 'Film 🎬'],
-  overlap: 'Free 7–10 pm his time, about 30 min before your evening.',
-  bio: 'Software engineer living in Berlin. Looking for a regular partner for weekly 50/50 voice practice.',
-}
-
-const ALL_PARTNERS = [
-  { id: 1, name: 'Lukas', age: 26, city: 'Berlin', flag: '🇩🇪', native: 'German', learning: 'English', level: 'B1', status: 'online', topics: ['Football ⚽', 'Cooking 🍳', 'Film 🎬'], rating: 4.9, sessions: 28, avatar: 'L', match: 92, bio: 'Native German speaker in Berlin. Happy to exchange for English conversations!' },
-  { id: 2, name: 'Maria Santos', age: 24, city: 'São Paulo', flag: '🇧🇷', native: 'Portuguese', learning: 'English', level: 'B2', status: 'online', topics: ['Music 🎵', 'Travel ✈️', 'Food 🍕'], rating: 4.9, sessions: 24, avatar: 'MS', match: 88, bio: 'Passionate about language learning and travel. I love sharing Brazilian culture!' },
-  { id: 3, name: 'Yuki Tanaka', age: 28, city: 'Tokyo', flag: '🇯🇵', native: 'Japanese', learning: 'English', level: 'A2', status: 'online', topics: ['Anime 🎌', 'Gaming 🎮', 'Tech 💻'], rating: 4.7, sessions: 12, avatar: 'YT', match: 85, bio: 'Huge anime fan looking to improve English for international work.' },
-  { id: 4, name: 'Pierre Dubois', age: 31, city: 'Paris', flag: '🇫🇷', native: 'French', learning: 'English', level: 'C1', status: 'offline', topics: ['Art 🎨', 'Literature 📚', 'Film 🎬'], rating: 4.8, sessions: 38, avatar: 'PD', match: 80, bio: 'French teacher and language enthusiast. Native French, near-native English.' },
-  { id: 5, name: 'Carlos Ruiz', age: 27, city: 'Madrid', flag: '🇪🇸', native: 'Spanish', learning: 'English', level: 'B1', status: 'online', topics: ['Sports ⚽', 'Cooking 🍳', 'Movies 🎬'], rating: 4.5, sessions: 9, avatar: 'CR', match: 79, bio: 'Sports journalist who wants to write in English. Huge football fan!' },
-  { id: 6, name: 'Sofia Müller', age: 25, city: 'Munich', flag: '🇩🇪', native: 'German', learning: 'Spanish', level: 'B1', status: 'away', topics: ['Science 🔬', 'Hiking 🏔️', 'Music 🎵'], rating: 4.6, sessions: 18, avatar: 'SM', match: 76, bio: 'Software engineer by day, language learner by night.' },
+const PARTNERS_DATA = [
+  {
+    id: 1,
+    name: 'Bilal Yusuf',
+    flag: '🇸🇪',
+    country: 'Sweden',
+    nativeLang: 'SWE',
+    learningLang: 'ENG',
+    status: 'online',
+    activeText: 'Active now',
+    avatar: 'BY',
+    bio: "Hi! My name is Bilal Yusuf and I'm from Sweden. I joined LinguaLink to improve my English and share Swedish culture!",
+    interests: ['Sports', 'Software', 'Travel'],
+    genderAge: '♂ 24',
+    rating: 4.9,
+    sessions: 32,
+  },
+  {
+    id: 2,
+    name: 'Furkan',
+    flag: '🇷🇺',
+    country: 'Russia',
+    nativeLang: 'RU',
+    learningLang: 'ES',
+    status: 'online',
+    activeText: 'Active now',
+    avatar: 'FK',
+    bio: "Hi! I'm Furkan from Saint Petersburg. Looking for serious Spanish practice in exchange for Russian lessons.",
+    interests: ['Dance', 'Languages', 'Music'],
+    genderAge: '♂ 22',
+    rating: 4.8,
+    sessions: 19,
+  },
+  {
+    id: 3,
+    name: 'Yağmur',
+    flag: '🇹🇷',
+    country: 'Turkey',
+    nativeLang: 'TUR',
+    learningLang: 'JA',
+    status: 'online',
+    activeText: 'Active now',
+    avatar: 'YG',
+    bio: "Merhaba! Native Turkish speaker, passionate about Japanese culture and anime. Let's do a 50/50 language swap!",
+    interests: ['Sports', 'Anime', 'Art'],
+    genderAge: '♀ 21',
+    rating: 5.0,
+    sessions: 45,
+  },
+  {
+    id: 4,
+    name: 'Yüsra',
+    flag: '🇹🇷',
+    country: 'Turkey',
+    nativeLang: 'TUR',
+    learningLang: 'ES',
+    status: 'online',
+    activeText: 'Active now',
+    avatar: 'YS',
+    bio: "Hi everyone! I want to practice conversational Spanish for my upcoming travel. Happy to teach Turkish in return!",
+    interests: ['Cooking', 'Music', 'Photography'],
+    genderAge: '♀ 23',
+    rating: 4.7,
+    sessions: 14,
+  },
+  {
+    id: 5,
+    name: 'Lukas Meyer',
+    flag: '🇩🇪',
+    country: 'Germany',
+    nativeLang: 'DEU',
+    learningLang: 'ENG',
+    status: 'online',
+    activeText: 'Active now',
+    avatar: 'LM',
+    bio: "Software developer living in Berlin. Looking for regular English conversation partners for weekly voice practice.",
+    interests: ['Software', 'Football', 'Cinema'],
+    genderAge: '♂ 26',
+    rating: 4.9,
+    sessions: 52,
+  },
+  {
+    id: 6,
+    name: 'Maria Santos',
+    flag: '🇧🇷',
+    country: 'Brazil',
+    nativeLang: 'POR',
+    learningLang: 'ENG',
+    status: 'away',
+    activeText: 'Active 2h ago',
+    avatar: 'MS',
+    bio: "Ola! Passionate language lover from São Paulo. Let's practice English and Portuguese together!",
+    interests: ['Music', 'Travel', 'Food'],
+    genderAge: '♀ 25',
+    rating: 4.8,
+    sessions: 28,
+  },
 ]
 
-const LANGUAGES = ['All', 'German', 'English', 'Spanish', 'French', 'Japanese', 'Portuguese']
-const LEVELS = ['All', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+const FILTER_TABS = [
+  { id: 'all', label: 'All' },
+  { id: 'serious', label: 'Serious Learners' },
+  { id: 'nearby', label: 'Nearby' },
+  { id: 'online', label: 'Online Now' },
+  { id: 'native', label: 'Native Speakers' },
+]
 
 const ICEBREAKERS = [
-  'Hi Lukas! I just finished a lesson on greetings and wanted to try: Wie war dein Tag?',
-  'Hey! I saw you love film and cooking. Would love to practice German with you!',
-  'Hallo! I am learning German and can help with your English. Up for a 50/50 chat?',
+  'Hey! Saw your profile and would love to practice together! 🚀',
+  'Hej! I can help with your target language if you help with mine 🤝',
+  'Hi there! Loved your interests in tech & travel, up for a quick chat? 😊',
 ]
 
 export default function PartnersPage() {
   const navigate = useNavigate()
   const { addToast } = useToast()
 
+  const [activeTab, setActiveTab] = useState('all')
   const [search, setSearch] = useState('')
-  const [filterLang, setFilterLang] = useState('All')
-  const [filterLevel, setFilterLevel] = useState('All')
-  const [spotlightDismissed, setSpotlightDismissed] = useState(false)
-  const [sayHiModal, setSayHiModal] = useState(null)
-  const [selectedIcebreaker, setSelectedIcebreaker] = useState(ICEBREAKERS[0])
-  const [selected, setSelected] = useState(null)
-
   const [connections, setConnections] = useState({})
+  const [wavingPartner, setWavingPartner] = useState(null)
+  const [selectedPartner, setSelectedPartner] = useState(null)
+  const [icebreakerModal, setIcebreakerModal] = useState(null)
+  const [chosenIcebreaker, setChosenIcebreaker] = useState(ICEBREAKERS[0])
 
-  const handleConnect = async (partner, e) => {
+  const handleWave = async (partner, e) => {
     e.stopPropagation()
+    setWavingPartner(partner.id)
+    setTimeout(() => setWavingPartner(null), 1000)
+
     setConnections(prev => ({ ...prev, [partner.id]: 'PENDING' }))
-    addToast(`Connection request sent to ${partner.name}! ⏳`, 'info')
+    addToast(`Waved at ${partner.name}! 👋 Request sent`, 'info')
+
     try {
       await sendConnectionRequest(partner.id)
     } catch {
       // Optimistic state preserved
     }
+
+    // Open icebreaker prompt
+    setIcebreakerModal(partner)
   }
 
-  const filtered = ALL_PARTNERS.filter(p => {
-    const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.learning.toLowerCase().includes(search.toLowerCase()) ||
-      p.native.toLowerCase().includes(search.toLowerCase())
-    const matchLang = filterLang === 'All' || p.learning === filterLang || p.native === filterLang
-    const matchLevel = filterLevel === 'All' || p.level === filterLevel
-    return matchSearch && matchLang && matchLevel
-  })
-
   const sendIcebreaker = () => {
-    addToast(`Message sent to ${sayHiModal.name}! 🚀`, 'success')
+    addToast(`Message sent to ${icebreakerModal.name}! 🚀`, 'success')
     navigate('/chat', {
       state: {
-        partnerId: sayHiModal.id,
-        initialPrompt: selectedIcebreaker,
+        partnerId: icebreakerModal.id,
+        initialPrompt: chosenIcebreaker,
       },
     })
   }
 
+  const filtered = PARTNERS_DATA.filter(p => {
+    if (activeTab === 'online' && p.status !== 'online') return false
+    if (!search) return true
+    return (
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      p.country.toLowerCase().includes(search.toLowerCase()) ||
+      p.interests.some(i => i.toLowerCase().includes(search.toLowerCase()))
+    )
+  })
+
   return (
-    <div className="partners-page">
-      <div className="page-header">
-        <div>
-          <h1 className="display-md">Language Exchange Partners</h1>
-          <p className="body-sm text-secondary mt-4">
-            The language swap is the headline: find native speakers who want to learn yours.
-          </p>
+    <div className="hellotalk-partners-container">
+      {/* Top Header Bar from HelloTalk Mockup */}
+      <div className="partners-top-bar">
+        {/* VIP / Streak Pill Badge */}
+        <div className="vip-badge-pill">
+          <span className="vip-star">★</span>
+          <span className="vip-text">VIP</span>
         </div>
+
+        {/* Center Title */}
+        <h1 className="partners-main-title">Find Language Partners</h1>
+
+        {/* Settings Gear Button */}
+        <button
+          type="button"
+          className="settings-gear-btn"
+          onClick={() => navigate('/settings')}
+          title="Filter & Settings"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </button>
       </div>
 
-      {/* Featured Spotlight Card: Parley "Discover" Screen Signature */}
-      {!spotlightDismissed && (
-        <div className="parley-spotlight-card mt-20">
-          <div className="spotlight-top-banner">
-            <div className="spotlight-badge">⭐ Recommended Match</div>
-            <div className="spotlight-match-pill">{SPOTLIGHT_PARTNER.match}% Match</div>
-          </div>
-
-          <div className="spotlight-hero-area">
-            <div className="spotlight-profile-row">
-              <div className="spotlight-avatar">{SPOTLIGHT_PARTNER.avatar}</div>
-              <div>
-                <h2 className="spotlight-name">
-                  {SPOTLIGHT_PARTNER.name}, {SPOTLIGHT_PARTNER.age}{' '}
-                  <span className="verified-tag">✓ Verified</span>
-                </h2>
-                <div className="spotlight-city">
-                  {SPOTLIGHT_PARTNER.city}, {SPOTLIGHT_PARTNER.country} {SPOTLIGHT_PARTNER.flag}
-                </div>
-              </div>
-            </div>
-
-            {/* The Headline: Language Swap */}
-            <div className="swap-banner mt-16">
-              <div className="swap-col swap-col-teach">
-                <span className="swap-lbl">You teach (Mint)</span>
-                <span className="swap-val">English</span>
-              </div>
-              <div className="swap-symbol">⇄</div>
-              <div className="swap-col swap-col-learn">
-                <span className="swap-lbl">He teaches (Lilac)</span>
-                <span className="swap-val">German</span>
-              </div>
-            </div>
-
-            {/* Tags & Time Overlap */}
-            <div className="spotlight-tags-row mt-14">
-              {SPOTLIGHT_PARTNER.tags.map(t => (
-                <span key={t} className="parley-tag">{t}</span>
-              ))}
-            </div>
-
-            <p className="spotlight-overlap-notice mt-10">
-              🕒 {SPOTLIGHT_PARTNER.overlap}
-            </p>
-
-            <div className="spotlight-actions-row mt-16">
-              <button
-                className="btn btn-ghost btn-sm"
-                onClick={() => setSpotlightDismissed(true)}
-              >
-                Skip
-              </button>
-              <button
-                className={`btn btn-sm ${connections[SPOTLIGHT_PARTNER.id] === 'PENDING' ? 'btn-outline' : connections[SPOTLIGHT_PARTNER.id] === 'ACCEPTED' ? 'btn-success' : 'btn-outline'}`}
-                onClick={(e) => handleConnect(SPOTLIGHT_PARTNER, e)}
-                disabled={connections[SPOTLIGHT_PARTNER.id] === 'PENDING' || connections[SPOTLIGHT_PARTNER.id] === 'ACCEPTED'}
-              >
-                {connections[SPOTLIGHT_PARTNER.id] === 'ACCEPTED' ? '✓ Connected' : connections[SPOTLIGHT_PARTNER.id] === 'PENDING' ? '⏳ Request Pending' : '+ Connect'}
-              </button>
-              <button
-                className="btn btn-gold btn-md"
-                onClick={() => setSayHiModal(SPOTLIGHT_PARTNER)}
-              >
-                Say hi 👋
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Filters Bar */}
-      <div className="partners-filters card mt-24">
-        <div className="input-group flex-1" style={{ minWidth: 220 }}>
-          <span className="input-icon">🔍</span>
-          <input
-            className="form-input"
-            placeholder="Search by name or language…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-        </div>
-        <select
-          className="form-input filter-select"
-          value={filterLang}
-          onChange={e => setFilterLang(e.target.value)}
-        >
-          {LANGUAGES.map(l => <option key={l} value={l}>{l === 'All' ? 'All Languages' : l}</option>)}
-        </select>
-        <select
-          className="form-input filter-select"
-          value={filterLevel}
-          onChange={e => setFilterLevel(e.target.value)}
-        >
-          {LEVELS.map(l => <option key={l} value={l}>{l === 'All' ? 'All Levels' : l}</option>)}
-        </select>
+      {/* Horizontal Pill Tab Filter Bar from Mockup */}
+      <div className="partners-filter-tabs-row">
+        {FILTER_TABS.map(tab => (
+          <button
+            key={tab.id}
+            type="button"
+            className={`partner-filter-pill ${activeTab === tab.id ? 'active-pill' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Partners Grid */}
-      <div className="partners-grid mt-20">
-        {filtered.map(p => (
-          <div key={p.id} className="parley-partner-card card card-hover" onClick={() => setSelected(p)}>
-            <div className="flex justify-between items-start">
-              <div className="flex items-center gap-10">
-                <div className="avatar avatar-md avatar-gradient">{p.avatar}</div>
-                <div>
-                  <div className="body-sm" style={{ fontWeight: 700 }}>
-                    {p.name} {p.flag}
-                  </div>
-                  <div className="caption text-muted">{p.city} · {p.level}</div>
+      {/* Quick Search Input */}
+      <div className="partners-search-box mt-16">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="search-icon">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          type="text"
+          placeholder="Search partners by name, language, or interest…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      {/* List of Partners matching HelloTalk Middle Screen */}
+      <div className="partners-cards-stack mt-20">
+        {filtered.map(partner => (
+          <div
+            key={partner.id}
+            className="hellotalk-partner-card"
+            onClick={() => setSelectedPartner(partner)}
+          >
+            {/* Left Side: Avatar + Flag Badge + Active status */}
+            <div className="partner-avatar-col">
+              <div className="avatar-wrapper">
+                <div className="partner-avatar-circle">
+                  {partner.avatar}
+                </div>
+                {/* Round Country Flag Badge overlapping bottom corner */}
+                <span className="avatar-flag-badge">
+                  {partner.flag}
+                </span>
+              </div>
+              <div className="status-label-row">
+                <span className="online-green-dot" />
+                <span className="online-text">{partner.activeText}</span>
+              </div>
+            </div>
+
+            {/* Middle: Details, Language Swap, Bio, and Interest Tags */}
+            <div className="partner-info-col">
+              <div className="partner-name-row">
+                <span className="partner-name">{partner.name}</span>
+                {/* Language Swap Indicator SWE ⇄ ENG */}
+                <div className="language-swap-pill">
+                  <span className="lang-native-code">{partner.nativeLang}</span>
+                  <span className="lang-swap-arrows">⇄</span>
+                  <span className="lang-learn-code">{partner.learningLang}</span>
                 </div>
               </div>
-              <span className="badge badge-warning">{p.match}% Match</span>
+
+              {/* Bio Preview Snippet */}
+              <p className="partner-bio-snippet">
+                {partner.bio}
+              </p>
+
+              {/* Interest Pills */}
+              <div className="partner-interests-row">
+                {partner.interests.map(tag => (
+                  <span key={tag} className="interest-pill">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Language Swap Indicator */}
-            <div className="mini-swap-box mt-12">
-              <span className="mini-swap-teach">Teaches {p.native}</span>
-              <span className="mini-swap-arrow">⇄</span>
-              <span className="mini-swap-learn">Learns {p.learning}</span>
-            </div>
-
-            <p className="caption text-secondary mt-10 line-clamp-2">{p.bio}</p>
-
-            <div className="flex gap-6 mt-12 flex-wrap">
-              {p.topics.slice(0, 2).map(t => (
-                <span key={t} className="parley-tag parley-tag-sm">{t}</span>
-              ))}
-            </div>
-
-            <div className="flex gap-8 mt-14">
+            {/* Right: The Signature HelloTalk Purple Waving Hand Button */}
+            <div className="partner-action-col">
               <button
-                className={`btn btn-sm ${connections[p.id] === 'PENDING' ? 'btn-outline' : connections[p.id] === 'ACCEPTED' ? 'btn-success' : 'btn-outline'}`}
-                style={{ minWidth: 92 }}
-                onClick={(e) => handleConnect(p, e)}
-                disabled={connections[p.id] === 'PENDING' || connections[p.id] === 'ACCEPTED'}
+                type="button"
+                className={`wave-action-btn ${wavingPartner === partner.id ? 'waving-anim' : ''} ${connections[partner.id] ? 'connected-btn' : ''}`}
+                onClick={(e) => handleWave(partner, e)}
+                title="Say hi and connect!"
               >
-                {connections[p.id] === 'ACCEPTED' ? '✓ Friends' : connections[p.id] === 'PENDING' ? '⏳ Pending' : '+ Connect'}
-              </button>
-              <button
-                className="btn btn-gold btn-sm flex-1"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setSayHiModal(p)
-                }}
-              >
-                Say hi 👋
-              </button>
-              <button
-                className="btn btn-outline btn-sm"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setSelected(p)
-                }}
-              >
-                Profile
+                <span className="wave-icon">👋</span>
               </button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Say Hi Icebreaker Modal */}
-      {sayHiModal && (
-        <div className="modal-overlay" onClick={() => setSayHiModal(null)}>
-          <div className="modal" style={{ maxWidth: 480 }} onClick={e => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-16">
-              <h2 className="heading-md">Send a greeting to {sayHiModal.name}</h2>
-              <button className="btn-ghost" onClick={() => setSayHiModal(null)}>✕</button>
+      {/* Say Hi / Icebreaker Modal */}
+      {icebreakerModal && (
+        <div className="modal-overlay" onClick={() => setIcebreakerModal(null)}>
+          <div className="modal hellotalk-modal" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-12 mb-16">
+              <div className="avatar-wrapper">
+                <div className="partner-avatar-circle" style={{ width: 44, height: 44 }}>
+                  {icebreakerModal.avatar}
+                </div>
+                <span className="avatar-flag-badge">{icebreakerModal.flag}</span>
+              </div>
+              <div>
+                <h3 className="heading-sm">Say Hi to {icebreakerModal.name}! 👋</h3>
+                <p className="caption text-secondary">
+                  Exchange: {icebreakerModal.nativeLang} ⇄ {icebreakerModal.learningLang}
+                </p>
+              </div>
             </div>
+
             <p className="body-sm text-secondary mb-12">
-              Choose an icebreaker to kick off your language exchange:
+              Choose a friendly opening message to break the ice:
             </p>
 
-            <div className="flex flex-col gap-10">
-              {ICEBREAKERS.map((ib, idx) => (
+            <div className="flex flex-col gap-8 mb-20">
+              {ICEBREAKERS.map(msg => (
                 <div
-                  key={idx}
-                  className={`icebreaker-choice ${selectedIcebreaker === ib ? 'icebreaker-selected' : ''}`}
-                  onClick={() => setSelectedIcebreaker(ib)}
+                  key={msg}
+                  className={`icebreaker-option ${chosenIcebreaker === msg ? 'selected' : ''}`}
+                  onClick={() => setChosenIcebreaker(msg)}
                 >
-                  <span className="icebreaker-icon">💬</span>
-                  <span className="body-sm flex-1">{ib}</span>
+                  {msg}
                 </div>
               ))}
             </div>
 
-            <div className="flex gap-10 mt-20">
-              <button className="btn btn-ghost flex-1" onClick={() => setSayHiModal(null)}>
+            <div className="flex justify-end gap-10">
+              <button className="btn btn-outline btn-sm" onClick={() => setIcebreakerModal(null)}>
                 Cancel
               </button>
-              <button className="btn btn-gold flex-2" onClick={sendIcebreaker}>
-                Send Message & Open Chat →
+              <button className="btn btn-primary btn-sm" onClick={sendIcebreaker}>
+                Send Message & Chat →
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Partner Detail Modal */}
-      {selected && (
-        <div className="modal-overlay" onClick={() => setSelected(null)}>
-          <div className="modal" style={{ maxWidth: 500 }} onClick={e => e.stopPropagation()}>
-            <div className="flex items-center gap-14 mb-16">
-              <div className="avatar avatar-xl avatar-gradient">{selected.avatar}</div>
-              <div>
-                <h2 className="heading-lg">{selected.name} {selected.flag}</h2>
-                <div className="caption text-muted">{selected.city} · ⭐ {selected.rating} · {selected.sessions} sessions</div>
-              </div>
-            </div>
-
-            <div className="swap-banner mb-14">
-              <div className="swap-col swap-col-teach">
-                <span className="swap-lbl">Teaches</span>
-                <span className="swap-val">{selected.native}</span>
-              </div>
-              <div className="swap-symbol">⇄</div>
-              <div className="swap-col swap-col-learn">
-                <span className="swap-lbl">Learns</span>
-                <span className="swap-val">{selected.learning}</span>
-              </div>
-            </div>
-
-            <p className="body-sm text-secondary">{selected.bio}</p>
-
-            <div className="flex gap-10 mt-24">
-              <button
-                className="btn btn-gold flex-1"
-                onClick={() => {
-                  setSelected(null)
-                  setSayHiModal(selected)
-                }}
-              >
-                Say hi 👋
-              </button>
-              <Link to="/chat" className="btn btn-outline flex-1">
-                Open Chat 💬
-              </Link>
             </div>
           </div>
         </div>

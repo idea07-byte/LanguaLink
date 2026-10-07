@@ -2,58 +2,64 @@
    LinguaLink — Global Design System
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* ---------- CSS Custom Properties ---------- */
+/* ---------- CSS Custom Properties (HelloTalk Inspired Design System) ---------- */
 :root {
   /* Brand Colors */
-  --brand-primary:    #7C3AED;   /* violet-700 */
-  --brand-primary-light: #8B5CF6; /* violet-500 */
-  --brand-primary-dark: #5B21B6;  /* violet-800 */
-  --brand-secondary: #06B6D4;    /* cyan-500 */
-  --brand-accent:    #F59E0B;    /* amber-500 */
-  --brand-success:   #10B981;    /* emerald-500 */
-  --brand-danger:    #EF4444;    /* red-500 */
-  --brand-warning:   #F59E0B;    /* amber-500 */
+  --brand-primary:       #1B84FF;   /* Electric Royal Blue */
+  --brand-primary-light: #489CFF;   /* Bright Sky Blue */
+  --brand-primary-dark:  #0066E0;   /* Deep Blue */
+  --brand-purple:        #7C5CFC;   /* Playful Violet / Indigo */
+  --brand-secondary:     #7C5CFC;   /* Secondary Violet */
+  --brand-coral:         #FF4B72;   /* Coral Pink / Red */
+  --brand-yellow:        #FFB800;   /* Sunny Warm Yellow */
+  --brand-green:         #00D287;   /* Mint / Emerald Green */
+  --brand-accent:        #FFB800;   /* Accent Yellow */
+  --brand-success:       #00D287;   /* Success Mint */
+  --brand-danger:        #FF4B72;   /* Danger Coral */
+  --brand-warning:       #FFB800;   /* Warning Amber */
 
-  /* Dark Surface Palette */
-  --bg-base:    #0A0A0F;
-  --bg-surface: #111118;
-  --bg-card:    #18181f;
-  --bg-elevated:#20202a;
-  --bg-input:   #1a1a24;
+  /* Crisp Light Surface Palette */
+  --bg-base:     #F4F6FB;           /* Light canvas */
+  --bg-surface:  #FFFFFF;           /* Pure white surface */
+  --bg-card:     #FFFFFF;           /* Clean white card */
+  --bg-elevated: #F8FAFD;           /* Soft off-white */
+  --bg-input:    #F1F4F9;           /* Pill input background */
 
   /* Borders */
-  --border-subtle: rgba(255,255,255,0.06);
-  --border-mid:    rgba(255,255,255,0.12);
-  --border-active: rgba(124,58,237,0.6);
+  --border-subtle: #EDF2F7;
+  --border-mid:    #E2E8F0;
+  --border-active: #1B84FF;
 
   /* Text */
-  --text-primary:   #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted:     #475569;
-  --text-accent:    #A78BFA;
+  --text-primary:   #1E293B;        /* Dark slate */
+  --text-secondary: #64748B;        /* Cool grey */
+  --text-muted:     #94A3B8;        /* Soft grey */
+  --text-accent:    #1B84FF;        /* Blue accent */
 
   /* Gradients */
-  --grad-brand: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
-  --grad-card:  linear-gradient(145deg, rgba(124,58,237,0.08) 0%, rgba(6,182,212,0.04) 100%);
-  --grad-glow:  radial-gradient(ellipse at top, rgba(124,58,237,0.15) 0%, transparent 70%);
+  --grad-brand: linear-gradient(135deg, #1B84FF 0%, #7C5CFC 100%);
+  --grad-card:  linear-gradient(145deg, #FFFFFF 0%, #F8FAFD 100%);
+  --grad-glow:  radial-gradient(ellipse at top, rgba(27,132,255,0.1) 0%, transparent 70%);
+  --grad-candy: linear-gradient(135deg, #1B84FF 0%, #FFB800 33%, #FF4B72 66%, #00D287 100%);
+  --grad-vip:   linear-gradient(135deg, #FF6B4A 0%, #FFB800 100%);
 
-  /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
-  --shadow-glow:0 0 40px rgba(124,58,237,0.25);
+  /* Soft Ambient Shadows */
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md:   0 6px 20px rgba(0,0,0,0.06);
+  --shadow-lg:   0 14px 38px rgba(0,0,0,0.08);
+  --shadow-glow: 0 8px 30px rgba(27,132,255,0.18);
 
-  /* Radii */
-  --radius-sm:  6px;
-  --radius-md:  12px;
-  --radius-lg:  16px;
-  --radius-xl:  24px;
-  --radius-full:9999px;
+  /* Modern Rounded Radii */
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-full: 9999px;
 
   /* Spacing */
-  --sidebar-width: 240px;
+  --sidebar-width: 250px;
   --header-height: 64px;
 
   /* Transitions */
@@ -61,23 +67,23 @@
   --transition-normal: 0.25s ease;
   --transition-slow:   0.4s ease;
 
-  /* Parley Signature Color System */
-  --ink:    #1E2150;
-  --gold:   #FFB400;
-  --mint:   #CDEBDD;
-  --lilac:  #D9D4FF;
-  --coral:  #E8574A;
+  /* Parley / HelloTalk Signature Colors */
+  --ink:    #1E293B;
+  --gold:   #FFB800;
+  --mint:   #D1F4E5;
+  --lilac:  #EDE9FE;
+  --coral:  #FF4B72;
 
-  /* Language Semantics: Colour shows the language, not who sent it */
-  --lang-learning:     #D9D4FF;
-  --lang-learning-ink: #1E2150;
-  --lang-native:       #CDEBDD;
-  --lang-native-ink:   #1E2150;
-  --lang-gold:         #FFB400;
+  /* Language Semantics */
+  --lang-learning:     #EDE9FE;
+  --lang-learning-ink: #5B21B6;
+  --lang-native:       #D1F4E5;
+  --lang-native-ink:   #065F46;
+  --lang-gold:         #FFB800;
 
   /* Typography */
-  --font-display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
-  --font-body:    'Figtree', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body:    'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* ---------- Reset ---------- */
@@ -127,8 +133,8 @@ ul, ol { list-style: none; }
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 10px 20px; border-radius: var(--radius-md);
-  font-size: 0.9rem; font-weight: 600; letter-spacing: 0.01em;
+  padding: 11px 22px; border-radius: var(--radius-full);
+  font-size: 0.92rem; font-weight: 600; letter-spacing: -0.01em;
   border: none; transition: all var(--transition-fast);
   position: relative; overflow: hidden; white-space: nowrap;
 }
@@ -136,77 +142,104 @@ ul, ol { list-style: none; }
   content: ''; position: absolute; inset: 0;
   background: rgba(255,255,255,0); transition: background var(--transition-fast);
 }
-.btn:hover::after { background: rgba(255,255,255,0.06); }
-.btn:active::after { background: rgba(255,255,255,0.12); }
+.btn:hover::after { background: rgba(255,255,255,0.08); }
+.btn:active::after { background: rgba(0,0,0,0.06); }
 
 .btn-primary {
-  background: var(--grad-brand);
+  background: var(--brand-primary);
   color: #fff;
-  box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+  box-shadow: 0 4px 14px rgba(27,132,255,0.32);
 }
-.btn-primary:hover { box-shadow: 0 6px 28px rgba(124,58,237,0.55); transform: translateY(-1px); }
+.btn-primary:hover {
+  background: var(--brand-primary-light);
+  box-shadow: 0 6px 20px rgba(27,132,255,0.45);
+  transform: translateY(-1px);
+}
+
+.btn-purple {
+  background: var(--brand-purple);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(124,92,252,0.3);
+}
+.btn-purple:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 6px 20px rgba(124,92,252,0.42);
+  transform: translateY(-1px);
+}
 
 .btn-outline {
-  background: transparent;
-  border: 1px solid var(--border-mid);
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-mid);
   color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
 }
-.btn-outline:hover { border-color: var(--brand-primary-light); background: rgba(124,58,237,0.08); }
+.btn-outline:hover {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+  background: rgba(27,132,255,0.04);
+}
 
 .btn-ghost {
   background: transparent; color: var(--text-secondary);
 }
-.btn-ghost:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.btn-ghost:hover { color: var(--text-primary); background: rgba(0,0,0,0.04); }
 
 .btn-danger {
-  background: rgba(239,68,68,0.15); color: var(--brand-danger);
-  border: 1px solid rgba(239,68,68,0.3);
+  background: rgba(255,75,114,0.1); color: var(--brand-danger);
+  border: 1px solid rgba(255,75,114,0.25);
 }
-.btn-danger:hover { background: rgba(239,68,68,0.25); }
+.btn-danger:hover { background: rgba(255,75,114,0.18); }
 
-.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
-.btn-lg { padding: 14px 28px; font-size: 1rem; }
-.btn-icon { padding: 8px; border-radius: var(--radius-md); }
+.btn-sm { padding: 7px 16px; font-size: 0.82rem; }
+.btn-lg { padding: 14px 30px; font-size: 1.02rem; font-weight: 700; }
+.btn-icon { padding: 9px; border-radius: 50%; }
 .btn-full { width: 100%; }
 
 /* ---------- Cards ---------- */
 .card {
-  background: var(--bg-card);
+  background: #FFFFFF;
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   padding: 24px;
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
 }
-.card:hover { border-color: var(--border-mid); }
+.card:hover {
+  border-color: var(--border-mid);
+  box-shadow: var(--shadow-md);
+}
 .card-glass {
-  background: rgba(24,24,31,0.8);
+  background: rgba(255,255,255,0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: var(--shadow-md);
 }
 .card-gradient { background: var(--grad-card); }
 .card-hover:hover { 
-  border-color: var(--brand-primary); 
+  border-color: var(--brand-primary-light); 
   box-shadow: var(--shadow-glow);
   transform: translateY(-2px);
 }
 
 /* ---------- Forms ---------- */
 .form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-label { font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); }
+.form-label { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
 .form-input {
   background: var(--bg-input);
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid transparent;
   border-radius: var(--radius-md);
-  padding: 12px 16px;
+  padding: 12px 18px;
   color: var(--text-primary);
   font-size: 0.95rem;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all var(--transition-fast);
   width: 100%;
 }
 .form-input:focus {
   outline: none;
+  background: #FFFFFF;
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  box-shadow: 0 0 0 3px rgba(27,132,255,0.15);
 }
 .form-input::placeholder { color: var(--text-muted); }
 .form-error { font-size: 0.8rem; color: var(--brand-danger); margin-top: 4px; }
@@ -366,32 +399,40 @@ ul, ol { list-style: none; }
 
 /* ---------- Tab Bar ---------- */
 .tab-bar {
-  display: flex; gap: 4px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md); padding: 4px;
+  display: flex; gap: 6px;
+  background: #EDF2F7;
+  border-radius: var(--radius-full); padding: 5px;
 }
 .tab-item {
-  flex: 1; padding: 8px 16px; border-radius: var(--radius-sm);
-  font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
+  flex: 1; padding: 8px 18px; border-radius: var(--radius-full);
+  font-size: 0.88rem; font-weight: 600; color: #64748B;
   border: none; background: transparent;
   transition: all var(--transition-fast); cursor: pointer;
 }
-.tab-item.active { background: var(--bg-elevated); color: var(--text-primary); }
-.tab-item:hover:not(.active) { color: var(--text-secondary); background: rgba(255,255,255,0.03); }
+.tab-item.active {
+  background: #FFFFFF;
+  color: var(--brand-primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.tab-item:hover:not(.active) { color: var(--text-primary); }
 
-/* ---------- Chip ---------- */
+/* ---------- Chip (HelloTalk Style Pill) ---------- */
 .chip {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; border-radius: var(--radius-full);
-  font-size: 0.8rem; font-weight: 500;
-  border: 1px solid var(--border-mid); color: var(--text-secondary);
-  background: var(--bg-elevated); cursor: pointer;
+  padding: 8px 18px; border-radius: var(--radius-full);
+  font-size: 0.86rem; font-weight: 600;
+  border: none; color: #475569;
+  background: #EEF2F6; cursor: pointer;
   transition: all var(--transition-fast);
 }
-.chip:hover, .chip.selected {
-  border-color: var(--brand-primary); color: var(--text-accent);
-  background: rgba(124,58,237,0.12);
+.chip:hover {
+  background: #E2E8F0;
+  color: #1E293B;
+}
+.chip.selected, .chip-active {
+  background: var(--brand-primary) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(27, 132, 255, 0.3);
 }
 
 /* ---------- Utility Classes ---------- */

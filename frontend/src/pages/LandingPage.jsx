@@ -1,298 +1,300 @@
+/* ============================================================
+   LandingPage — HelloTalk Inspired Visual Showcase
+   ============================================================ */
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import BrandLogo from '../components/BrandLogo'
 import './LandingPage.css'
 
 const FEATURES = [
   {
+    icon: '👋',
+    title: 'Partner Discovery',
+    desc: 'Match with native speakers worldwide by target language, level, and shared hobbies with 1-click waving.',
+    color: '#7C5CFC',
+  },
+  {
     icon: '💬',
-    title: 'Real-Time Chat',
-    desc: 'Connect with native speakers via live WebSocket-powered conversations with translation assistance.',
-    color: '#7C3AED',
+    title: 'Real-Time Chat & Translation',
+    desc: 'Chat via WebSockets with inline translation badges (文A) and instant AI grammar hints.',
+    color: '#1B84FF',
   },
   {
     icon: '🤖',
     title: 'AI Language Tutor',
-    desc: 'Get instant grammar corrections, vocabulary explanations, and personalized lessons powered by Gemini AI.',
-    color: '#06B6D4',
+    desc: 'Practice 24/7 with our AI tutor powered by Gemini. Real-time feedback, sentence corrections, and roleplay.',
+    color: '#00D287',
   },
   {
     icon: '🃏',
     title: 'Smart Flashcards',
-    desc: 'Spaced-repetition flashcard system that adapts to your learning pace and tracks your progress.',
-    color: '#F59E0B',
+    desc: 'Spaced repetition system (SM-2) automatically saves your chat corrections into personalized decks.',
+    color: '#FFB800',
   },
   {
-    icon: '🌍',
-    title: 'Partner Discovery',
-    desc: 'Find the perfect language exchange partner matched by language goals, level, and availability.',
-    color: '#10B981',
+    icon: '📞',
+    title: 'Fair-Time Voice Sessions',
+    desc: 'Practice speaking with integrated split-timer sessions that guarantee equal practice in both languages.',
+    color: '#FF4B72',
   },
   {
     icon: '📊',
-    title: 'Progress Tracking',
-    desc: 'Detailed analytics on your learning journey, XP points, streaks, and vocabulary growth.',
-    color: '#EF4444',
-  },
-  {
-    icon: '🔊',
-    title: 'Voice & Video',
-    desc: 'Practice speaking confidence with integrated voice notes and video call sessions with partners.',
-    color: '#8B5CF6',
+    title: 'Progress & Streaks',
+    desc: 'Track XP, streaks, level progressions, and earned badges as you unlock fluency milestones.',
+    color: '#1B84FF',
   },
 ]
 
-const LANGUAGES = ['🇪🇸 Spanish', '🇯🇵 Japanese', '🇫🇷 French', '🇩🇪 German', '🇰🇷 Korean', '🇮🇹 Italian', '🇵🇹 Portuguese', '🇨🇳 Mandarin', '🇧🇷 Brazilian', '🇷🇺 Russian', '🇸🇦 Arabic', '🇮🇳 Hindi']
-
-const STATS = [
-  { value: '50K+', label: 'Active Learners' },
-  { value: '120+', label: 'Languages' },
-  { value: '1M+', label: 'Messages Sent' },
-  { value: '98%', label: 'Satisfaction Rate' },
-]
-
-const TESTIMONIALS = [
-  {
-    name: 'Sofia M.',
-    flag: '🇧🇷',
-    lang: 'Learning English',
-    text: 'LinguaLink connected me with amazing English speakers. My fluency improved dramatically in just 3 months!',
-    avatar: 'SM',
-  },
-  {
-    name: 'Takeshi K.',
-    flag: '🇯🇵',
-    lang: 'Learning Spanish',
-    text: 'The AI tutor is incredible. It corrects my grammar in real time and explains why — better than any textbook.',
-    avatar: 'TK',
-  },
-  {
-    name: 'Emma L.',
-    flag: '🇫🇷',
-    lang: 'Learning Japanese',
-    text: 'The flashcard system is addictive! I\'ve learned 500+ kanji without even feeling like studying.',
-    avatar: 'EL',
-  },
+const LANGUAGES = [
+  '🇸🇪 Swedish', '🇹🇷 Turkish', '🇷🇺 Russian', '🇩🇪 German',
+  '🇪🇸 Spanish', '🇧🇷 Portuguese', '🇫🇷 French', '🇯🇵 Japanese',
+  '🇮🇹 Italian', '🇰🇷 Korean', '🇨🇳 Mandarin', '🇺🇸 English'
 ]
 
 export default function LandingPage() {
+  const [activeScreenTab, setActiveScreenTab] = useState('all') // 'all' | 'splash' | 'partners' | 'chat'
+
   return (
     <div className="landing">
-      {/* Nav */}
+      {/* Navigation */}
       <nav className="landing-nav">
         <div className="landing-nav-inner">
-          <Link to="/" className="landing-logo">
-            <div className="landing-logo-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
-              </svg>
-            </div>
-            <span className="landing-logo-text">LinguaLink</span>
-          </Link>
+          <BrandLogo size="md" showTagline={true} />
+
           <div className="landing-nav-links">
+            <a href="#mockups">UI Showcase</a>
             <a href="#features">Features</a>
             <a href="#languages">Languages</a>
-            <a href="#testimonials">Stories</a>
           </div>
-          <div className="flex gap-8">
-            <Link to="/login"    className="btn btn-outline btn-sm">Log in</Link>
-            <Link to="/register" className="btn btn-primary btn-sm">Get Started</Link>
+
+          <div className="flex gap-10">
+            <Link to="/login" className="btn btn-outline btn-sm">Log in</Link>
+            <Link to="/register" className="btn btn-primary btn-sm">Join Free</Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Hero Section */}
       <section className="hero">
         <div className="hero-glow hero-glow-1" />
         <div className="hero-glow hero-glow-2" />
-        <div className="hero-glow hero-glow-3" />
 
-        <div className="hero-content animate-fadeInUp">
+        <div className="hero-content">
           <div className="hero-badge">
-            <span className="badge badge-primary">🌟 New: AI Grammar Coach</span>
+            <span className="hero-streak-pill">
+              <span>🔥</span> 150+ Languages & Millions of Learners
+            </span>
           </div>
-          <h1 className="display-xl">
-            Learn Any Language<br />
-            <span className="gradient-text">With Real People</span>
+
+          <h1 className="hero-title">
+            The Friendly Way to<br />
+            <span className="hero-title-highlight">Learn Any Language</span>
           </h1>
-          <p className="hero-subtitle body-lg text-secondary">
-            Connect with native speakers worldwide. Practice through real conversations,
-            get AI-powered feedback, and master vocabulary with adaptive flashcards.
+
+          <p className="hero-subtitle">
+            Say goodbye to boring drills. Connect with real native partners, chat in real time with instant translation badges, and speak with confidence.
           </p>
+
           <div className="hero-actions">
-            <Link to="/register" className="btn btn-primary btn-lg" id="hero-cta-register">
-              Start Learning Free
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+            <Link to="/login" className="btn btn-primary btn-lg" id="hero-get-started-btn">
+              ⚡ Try Demo App Now
             </Link>
-            <Link to="/login" className="btn btn-outline btn-lg" id="hero-cta-login">
-              Sign In
+            <Link to="/partners" className="btn btn-outline btn-lg" id="hero-browse-partners-btn">
+              Explore Partners 👋
             </Link>
           </div>
-          <div className="hero-social-proof">
-            <div className="hero-avatars">
-              {['SM', 'TK', 'EL', 'JD', '+'].map((a, i) => (
-                <div key={i} className="hero-avatar" style={{ background: `hsl(${i * 50 + 250}, 70%, 60%)` }}>{a}</div>
-              ))}
+
+          <div className="hero-stats-row">
+            <div className="stat-item">
+              <span className="stat-num">50M+</span>
+              <span className="stat-label">Learners</span>
             </div>
-            <span className="caption text-muted">Join 50,000+ language learners</span>
+            <div className="stat-sep" />
+            <div className="stat-item">
+              <span className="stat-num">150+</span>
+              <span className="stat-label">Languages</span>
+            </div>
+            <div className="stat-sep" />
+            <div className="stat-item">
+              <span className="stat-num">98%</span>
+              <span className="stat-label">Success Rate</span>
+            </div>
           </div>
         </div>
 
-        {/* Hero visual */}
-        <div className="hero-visual animate-fadeInUp delay-200">
-          <div className="hero-app-preview">
-            <div className="preview-header">
-              <div className="preview-dots">
-                <span /><span /><span />
+        {/* Hero Interactive 3-Phone Showcase (Behance HelloTalk Cover Design) */}
+        <div className="hero-phones-showcase" id="mockups">
+          {/* Phone 1: Welcome & Auth Splash */}
+          <div className={`phone-mockup phone-mockup-splash ${activeScreenTab === 'splash' ? 'phone-focused' : ''}`}>
+            <div className="phone-screen-inner">
+              <div className="phone-card-header">
+                <BrandLogo size="sm" />
               </div>
-              <span className="caption text-muted">LinguaLink Chat</span>
-            </div>
-            <div className="preview-chat">
-              <div className="preview-msg preview-msg-left">
-                <div className="preview-avatar">M</div>
-                <div className="preview-bubble preview-bubble-left">
-                  ¿Cómo fue tu día? 😊
+              <div className="phone-splash-graphic">
+                <div className="mini-blob blob-blue" />
+                <div className="mini-blob blob-yellow" />
+                <div className="mini-blob blob-coral" />
+                <div className="mini-blob blob-green" />
+
+                <div className="mini-bubble bubble-1"><span>🇺🇸</span> Hello!</div>
+                <div className="mini-bubble bubble-2"><span>🇸🇪</span> Hej!</div>
+                <div className="mini-bubble bubble-3"><span>🇹🇷</span> Merhaba!</div>
+                <div className="mini-bubble bubble-4"><span>🇩🇪</span> Hallo!</div>
+                <div className="mini-bubble bubble-5"><span>🇪🇸</span> ¡Hola!</div>
+              </div>
+              <div className="phone-splash-actions">
+                <Link to="/login" className="mini-google-btn">
+                  <span>G</span> Sign in with Google
+                </Link>
+                <div className="mini-social-row">
+                  <span className="mini-social-btn fb-color">Facebook</span>
+                  <span className="mini-social-btn email-color">Email</span>
                 </div>
-              </div>
-              <div className="preview-msg preview-msg-right">
-                <div className="preview-bubble preview-bubble-right">
-                  ¡Muy bien! Aprendí nuevas palabras hoy
-                </div>
-                <div className="preview-avatar" style={{ background: 'var(--grad-brand)' }}>A</div>
-              </div>
-              <div className="preview-ai-hint">
-                <span className="badge badge-cyan">🤖 AI Tip</span>
-                <span className="caption">Great use of "nuevas"! Consider adding "gracias" to sound more natural.</span>
-              </div>
-              <div className="preview-msg preview-msg-left">
-                <div className="preview-avatar">M</div>
-                <div className="preview-bubble preview-bubble-left">
-                  ¡Perfecto! Tu progreso es increíble 🎉
-                </div>
-              </div>
-            </div>
-            <div className="preview-footer">
-              <div className="preview-input-bar">
-                <input placeholder="Type a message…" readOnly />
-                <button className="preview-send">➤</button>
               </div>
             </div>
           </div>
 
-          {/* Floating badges */}
-          <div className="hero-float hero-float-1 animate-float">
-            <span>🔥 12-day streak!</span>
+          {/* Phone 2: Partner Discovery (Middle Screen) */}
+          <div className={`phone-mockup phone-mockup-partners ${activeScreenTab === 'partners' ? 'phone-focused' : ''}`}>
+            <div className="phone-screen-inner">
+              <div className="mini-partner-top">
+                <span className="mini-vip-pill">VIP</span>
+                <span className="mini-partner-title">Find Partners</span>
+                <span className="mini-gear-icon">⚙️</span>
+              </div>
+              <div className="mini-chips-row">
+                <span className="mini-chip-active">All</span>
+                <span className="mini-chip">Serious</span>
+                <span className="mini-chip">Nearby</span>
+              </div>
+              <div className="mini-partner-cards">
+                <div className="mini-partner-item">
+                  <div className="mini-avatar-wrap">
+                    <div className="mini-avatar-circle">BY</div>
+                    <span className="mini-flag">🇸🇪</span>
+                  </div>
+                  <div className="mini-partner-info">
+                    <div className="mini-name-row">
+                      <strong>Bilal Yusuf</strong>
+                      <span className="mini-swap-tag">SWE ⇄ ENG</span>
+                    </div>
+                    <p className="mini-bio">Hi! I'm Bilal from Sweden...</p>
+                    <div className="mini-tags">
+                      <span>Sport</span>
+                      <span>Tech</span>
+                    </div>
+                  </div>
+                  <Link to="/chat" className="mini-wave-btn">👋</Link>
+                </div>
+
+                <div className="mini-partner-item">
+                  <div className="mini-avatar-wrap">
+                    <div className="mini-avatar-circle" style={{ background: '#FF4B72' }}>FK</div>
+                    <span className="mini-flag">🇷🇺</span>
+                  </div>
+                  <div className="mini-partner-info">
+                    <div className="mini-name-row">
+                      <strong>Furkan</strong>
+                      <span className="mini-swap-tag">RU ⇄ ES</span>
+                    </div>
+                    <p className="mini-bio">Learning Spanish for college...</p>
+                    <div className="mini-tags">
+                      <span>Dance</span>
+                      <span>Music</span>
+                    </div>
+                  </div>
+                  <Link to="/chat" className="mini-wave-btn">👋</Link>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="hero-float hero-float-2 animate-float delay-200">
-            <span>🃏 50 cards mastered</span>
-          </div>
-          <div className="hero-float hero-float-3 animate-float delay-400">
-            <span>⭐ +120 XP today</span>
+
+          {/* Phone 3: Chat Screen (Right Screen) */}
+          <div className={`phone-mockup phone-mockup-chat ${activeScreenTab === 'chat' ? 'phone-focused' : ''}`}>
+            <div className="phone-screen-inner">
+              <div className="mini-chat-nav">
+                <span>←</span>
+                <strong>Chat</strong>
+                <span>📞</span>
+              </div>
+              <div className="mini-chat-profile">
+                <div className="mini-avatar-circle" style={{ width: 32, height: 32, fontSize: '0.75rem' }}>BY</div>
+                <div>
+                  <div className="flex items-center gap-4">
+                    <strong style={{ fontSize: '0.8rem' }}>Bilal Yusuf</strong>
+                    <span className="mini-gender-tag">♂ 18</span>
+                  </div>
+                  <span className="caption" style={{ fontSize: '0.68rem', color: '#64748B' }}>Sport · Software</span>
+                </div>
+              </div>
+              <div className="mini-chat-canvas">
+                <div className="mini-date-divider">07/01 15:33</div>
+                <div className="mini-bubble-outgoing">
+                  Hey, hi Bilal, how's it going?
+                  <span className="mini-bubble-time">23:05</span>
+                </div>
+                <div className="mini-bubble-incoming">
+                  <span className="mini-trans-badge">文A</span>
+                  Hi buddy, you seem to be doing well. Where do you live?
+                  <span className="mini-bubble-time" style={{ color: '#94A3B8' }}>23:05</span>
+                </div>
+                <div className="mini-bubble-outgoing">
+                  USA, I think you are in Sweden
+                  <span className="mini-bubble-time">23:06</span>
+                </div>
+              </div>
+              <div className="mini-composer-bar">
+                <span>😊</span>
+                <span className="mini-composer-ph">Message…</span>
+                <span>🎙️</span>
+                <span className="mini-send-dot">➤</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="stats-section">
-        <div className="stats-inner">
-          {STATS.map((s, i) => (
-            <div key={i} className="stat-item">
-              <div className="display-md gradient-text">{s.value}</div>
-              <div className="body-sm text-muted">{s.label}</div>
+      {/* Languages Carousel */}
+      <section className="languages-strip" id="languages">
+        <h2 className="section-title text-center">Supported Languages</h2>
+        <p className="text-secondary text-center caption mb-24">Practice any language with native speakers who want to learn yours</p>
+        <div className="lang-pills-row">
+          {LANGUAGES.map(l => (
+            <div key={l} className="lang-pill-item">
+              {l}
             </div>
           ))}
         </div>
       </section>
 
-      {/* Features */}
-      <section className="section" id="features">
-        <div className="section-header text-center">
-          <span className="badge badge-primary mb-12">✨ Features</span>
-          <h2 className="display-md">Everything You Need to Fluency</h2>
-          <p className="body-lg text-secondary mt-12" style={{ maxWidth: 560, margin: '12px auto 0' }}>
-            A complete language learning ecosystem powered by AI and real human connection.
-          </p>
+      {/* Features Grid */}
+      <section className="features-section" id="features">
+        <div className="text-center mb-40">
+          <h2 className="section-title">Designed for Joyful Language Exchange</h2>
+          <p className="text-secondary body-md mt-8">Everything you need to go from beginner to fluent conversation</p>
         </div>
+
         <div className="features-grid">
-          {FEATURES.map((f, i) => (
-            <div key={i} className="feature-card card card-hover animate-fadeInUp" style={{ animationDelay: `${i * 0.08}s` }}>
-              <div className="feature-icon" style={{ background: `${f.color}22`, color: f.color }}>{f.icon}</div>
-              <h3 className="heading-md mt-16">{f.title}</h3>
+          {FEATURES.map(f => (
+            <div key={f.title} className="feature-card card card-hover">
+              <div className="feature-icon-bubble" style={{ background: `${f.color}15`, color: f.color }}>
+                {f.icon}
+              </div>
+              <h3 className="heading-sm mt-16">{f.title}</h3>
               <p className="body-sm text-secondary mt-8">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Languages */}
-      <section className="section section-dark" id="languages">
-        <div className="section-header text-center">
-          <span className="badge badge-cyan mb-12">🌍 Languages</span>
-          <h2 className="display-md">120+ Languages Available</h2>
-          <p className="body-lg text-secondary mt-12">
-            Find a partner for virtually any language in the world.
-          </p>
-        </div>
-        <div className="lang-cloud">
-          {LANGUAGES.map((l, i) => (
-            <div key={i} className="chip">{l}</div>
-          ))}
-          <div className="chip">+ 108 more</div>
-        </div>
+      {/* Bottom CTA */}
+      <section className="bottom-cta-banner">
+        <h2 className="display-md text-primary">Start Speaking Today</h2>
+        <p className="body-md text-secondary mt-8 mb-24">Join over 50 million language learners. Completely free.</p>
+        <Link to="/register" className="btn btn-primary btn-lg">
+          Create Free Account →
+        </Link>
       </section>
-
-      {/* Testimonials */}
-      <section className="section" id="testimonials">
-        <div className="section-header text-center">
-          <span className="badge badge-success mb-12">💬 Stories</span>
-          <h2 className="display-md">Loved by Learners Worldwide</h2>
-        </div>
-        <div className="testimonials-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <div key={i} className="testimonial-card card animate-fadeInUp" style={{ animationDelay: `${i * 0.1}s` }}>
-              <div className="testimonial-quote">"</div>
-              <p className="body-md text-secondary">{t.text}</p>
-              <div className="testimonial-author">
-                <div className="avatar avatar-md avatar-gradient">{t.avatar}</div>
-                <div>
-                  <div className="body-sm" style={{ fontWeight: 600 }}>{t.name} {t.flag}</div>
-                  <div className="caption text-muted">{t.lang}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="cta-section">
-        <div className="cta-glow" />
-        <div className="cta-content text-center">
-          <h2 className="display-md">Ready to Become Fluent?</h2>
-          <p className="body-lg text-secondary mt-12">
-            Join 50,000 learners already making progress. Free forever.
-          </p>
-          <div className="flex gap-16 justify-center mt-32">
-            <Link to="/register" className="btn btn-primary btn-lg" id="cta-register">
-              Create Free Account →
-            </Link>
-            <Link to="/login" className="btn btn-outline btn-lg" id="cta-login">
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="landing-footer">
-        <div className="landing-logo">
-          <div className="landing-logo-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
-            </svg>
-          </div>
-          <span className="landing-logo-text">LinguaLink</span>
-        </div>
-        <p className="caption text-muted mt-12">© 2024 LinguaLink. All rights reserved. Built with ❤️ for language learners.</p>
-      </footer>
     </div>
   )
 }

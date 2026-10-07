@@ -1,35 +1,80 @@
 /* ============================================================
-   AuthLayout — Centered card for Login / Register
+   AuthLayout — HelloTalk Inspired Mobile Phone Auth Splash Layout
    ============================================================ */
-import { Link } from 'react-router-dom'
+import React from 'react'
+import BrandLogo from '../components/BrandLogo'
 import './AuthLayout.css'
 
 export default function AuthLayout({ children }) {
   return (
     <div className="auth-layout">
-      {/* Background glows */}
-      <div className="auth-glow auth-glow-1" />
-      <div className="auth-glow auth-glow-2" />
+      {/* Decorative ambient background canvas */}
+      <div className="auth-canvas-bg">
+        <div className="auth-canvas-blob auth-canvas-blob-1" />
+        <div className="auth-canvas-blob-2" />
+        <div className="auth-canvas-blob-3" />
+      </div>
 
       <div className="auth-container">
-        {/* Logo */}
-        <Link to="/" className="auth-logo">
-          <div className="auth-logo-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
-            </svg>
+        {/* Mobile Device Frame Card */}
+        <div className="auth-phone-card">
+          {/* Top Brand Header */}
+          <div className="auth-card-header">
+            <BrandLogo size="md" showTagline={true} />
           </div>
-          <span className="auth-logo-text">LinguaLink</span>
-        </Link>
 
-        {/* Auth card */}
-        <div className="auth-card">
-          {children}
+          {/* HelloTalk Signature Visual: Organic Overlapping Color Shapes & Multilingual Bubbles */}
+          <div className="auth-splash-visual">
+            {/* The 4 Organic Blobs */}
+            <div className="splash-blob splash-blob-blue" />
+            <div className="splash-blob splash-blob-yellow" />
+            <div className="splash-blob splash-blob-coral" />
+            <div className="splash-blob splash-blob-green" />
+
+            {/* Floating Speech Bubbles with Avatars & Country Flags */}
+            <div className="floating-bubble bubble-pos-1">
+              <span className="floating-bubble-avatar">🇺🇸</span>
+              <span>Hello!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-2">
+              <span className="floating-bubble-avatar">🇸🇪</span>
+              <span>Hej!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-3">
+              <span className="floating-bubble-avatar">🇹🇷</span>
+              <span>Merhaba!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-4">
+              <span className="floating-bubble-avatar">🇩🇪</span>
+              <span>Hallo!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-5">
+              <span className="floating-bubble-avatar">🇪🇸</span>
+              <span>¡Hola!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-6">
+              <span className="floating-bubble-avatar">🇮🇹</span>
+              <span>Ciao!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-7">
+              <span className="floating-bubble-avatar">🇧🇷</span>
+              <span>Olá!</span>
+            </div>
+            <div className="floating-bubble bubble-pos-8">
+              <span className="floating-bubble-avatar">🇷🇺</span>
+              <span>Привет!</span>
+            </div>
+          </div>
+
+          {/* Card Body containing Login or Register forms and CTA buttons */}
+          <div className="auth-card-body">
+            {children}
+          </div>
         </div>
 
-        {/* Footer */}
+        {/* Global Footer */}
         <p className="auth-footer">
-          © 2024 LinguaLink. All rights reserved.
+          © 2026 LinguaLink. Connect, Learn & Speak Freely.
         </p>
       </div>
     </div>

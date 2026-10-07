@@ -1,0 +1,79 @@
+/* BrandLogo Styles */
+.brand-logo-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+
+/* 4-Dot Grid */
+.brand-dots-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.5px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.brand-dots-grid .dot {
+  border-radius: 50%;
+  display: block;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.brand-logo:hover .dot {
+  transform: scale(1.15);
+}
+
+/* Colors from the HelloTalk Redesign */
+.dot-blue   { background: #1B84FF; } /* Electric Royal Blue */
+.dot-yellow { background: #FFB800; } /* Sunny Warm Yellow */
+.dot-coral  { background: #FF4B72; } /* Coral Red / Pink */
+.dot-green  { background: #00D287; } /* Mint Emerald Green */
+
+/* Sizes */
+.brand-logo-sm .dot { width: 6px; height: 6px; }
+.brand-logo-sm .brand-dots-grid { gap: 2.5px; }
+.brand-logo-sm .brand-name { font-size: 1.05rem; font-weight: 700; }
+
+.brand-logo-md .dot { width: 9px; height: 9px; }
+.brand-logo-md .brand-dots-grid { gap: 4px; }
+.brand-logo-md .brand-name { font-size: 1.35rem; font-weight: 800; }
+
+.brand-logo-lg .dot { width: 13px; height: 13px; }
+.brand-logo-lg .brand-dots-grid { gap: 5px; }
+.brand-logo-lg .brand-name { font-size: 1.75rem; font-weight: 800; }
+
+.brand-text-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1E293B;
+  line-height: 1.1;
+}
+
+.brand-tagline {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748B;
+  letter-spacing: 0.01em;
+  margin-top: 2px;
+}
+
+.brand-logo-light .brand-name {
+  color: #FFFFFF;
+}
+.brand-logo-light .brand-tagline {
+  color: rgba(255, 255, 255, 0.8);
+}
