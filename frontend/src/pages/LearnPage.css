@@ -1,0 +1,336 @@
+/* ============================================================
+   LearnPage — Daily Path & Lesson Styles
+   ============================================================ */
+
+.learn-page {
+  max-width: 1100px;
+}
+
+/* Header Banner */
+.learn-header-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.learn-flag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #A78BFA;
+}
+
+.flag-icon { font-size: 18px; }
+
+.learn-header-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.learn-stat-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 10px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+/* Main Grid */
+.learn-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .learn-grid { grid-template-columns: 1fr; }
+}
+
+/* Stepper Path */
+.stepper-track {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+.step-node-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.step-node {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.step-completed {
+  background: #CDEBDD; /* Mint */
+  color: #1E2150;
+}
+
+.step-current {
+  background: #FFB400; /* Gold */
+  color: #1E2150;
+  width: 52px;
+  height: 52px;
+  box-shadow: 0 0 0 6px rgba(255, 180, 0, 0.25);
+}
+
+.step-locked {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border: 1px dashed var(--border-mid);
+}
+
+.step-line {
+  width: 3px;
+  height: 28px;
+  background: var(--border-subtle);
+  margin-left: 20px;
+}
+
+.step-line-done {
+  background: #CDEBDD;
+}
+
+.step-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Partner 1-Tap Link */
+.partner-callout-card {
+  background: #FFF1C7;
+  color: #1E2150;
+  border: 1.5px solid #FFB400;
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.partner-callout-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.callout-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1E2150;
+  color: #FFF;
+  font-family: var(--font-display);
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.callout-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.callout-prompt {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Exercise Workspace */
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exercise-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.exercise-type {
+  font-size: 12px;
+  color: #A78BFA;
+  font-weight: 600;
+}
+
+.exercise-prompt-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.prompt-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.prompt-phrase {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 6px;
+}
+
+.prompt-word.has-hint {
+  text-decoration: underline dotted #FFB400;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.prompt-word.has-hint:hover {
+  color: #FFB400;
+}
+
+.hint-tooltip-banner {
+  background: rgba(255, 180, 0, 0.12);
+  border: 1px solid rgba(255, 180, 0, 0.3);
+  color: #FFB400;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+/* Workspace Slots */
+.sentence-workspace-box {
+  background: var(--bg-surface);
+  border: 2px dashed var(--border-mid);
+  border-radius: 18px;
+  padding: 16px 20px;
+  min-height: 90px;
+}
+
+.workspace-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.workspace-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.placeholder-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Word Chips */
+.word-chip {
+  padding: 8px 14px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.word-chip:hover {
+  transform: translateY(-2px);
+}
+
+.word-chip-selected {
+  background: #D9D4FF; /* Lilac */
+  color: #1E2150;
+  box-shadow: 0 4px 12px rgba(217, 212, 255, 0.2);
+}
+
+.word-chip-available {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-mid);
+}
+.word-chip-available:hover {
+  border-color: #A78BFA;
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.word-bank-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.word-bank-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Feedback Banner */
+.exercise-feedback-banner {
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fb-correct {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10B981;
+}
+
+.fb-wrong {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #EF4444;
+}
+
+.fb-icon { font-size: 24px; }
+.fb-title { font-weight: 700; font-size: 15px; }
+.fb-sub { font-size: 13px; opacity: 0.9; margin-top: 2px; }
+
+/* Actions Row */
+.exercise-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
