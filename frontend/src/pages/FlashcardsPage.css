@@ -1,0 +1,153 @@
+.flashcards-page { max-width: 1100px; }
+
+/* Stats row */
+.flashcard-stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
+}
+.flashcard-stat {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 18px; text-align: center;
+}
+
+/* Due banner */
+.due-banner {
+  background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(239,68,68,0.08) 100%);
+  border-color: rgba(245,158,11,0.3);
+}
+.due-banner-content {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+
+/* Decks grid */
+.decks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.deck-card { cursor: pointer; }
+.deck-header { display: flex; align-items: center; justify-content: space-between; }
+.deck-flag { font-size: 1.5rem; }
+
+.deck-add {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-style: dashed !important; border-color: var(--border-mid) !important;
+  min-height: 160px;
+  cursor: pointer; opacity: 0.6;
+  transition: all var(--transition-fast);
+}
+.deck-add:hover { opacity: 1; border-color: var(--brand-primary) !important; }
+.deck-add-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px dashed var(--border-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: var(--text-muted);
+}
+
+/* Review layout */
+.review-layout {
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 600px; margin: 0 auto;
+}
+.review-progress { width: 100%; }
+
+/* 3D Flashcard */
+.flashcard-3d {
+  width: 100%; max-width: 560px;
+  height: 320px;
+  perspective: 1200px;
+  cursor: pointer;
+  margin-top: 32px;
+}
+.flashcard-inner {
+  width: 100%; height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  position: relative;
+}
+.flashcard-3d.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+.flashcard-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius-xl);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px;
+  text-align: center;
+}
+.flashcard-front {
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  box-shadow: var(--shadow-lg);
+}
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(6,182,212,0.08) 100%);
+  border: 1px solid rgba(124,58,237,0.25);
+  transform: rotateY(180deg);
+  box-shadow: var(--shadow-glow);
+}
+
+.flashcard-lang-badge {
+  background: rgba(124,58,237,0.15);
+  border: 1px solid rgba(124,58,237,0.25);
+  color: var(--text-accent);
+  font-size: 0.75rem; font-weight: 600;
+  padding: 3px 10px; border-radius: var(--radius-full);
+  margin-bottom: 20px;
+}
+.flashcard-word {
+  font-family: var(--font-display);
+  font-size: 3rem; font-weight: 700;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+.flashcard-example {
+  margin-top: 16px; padding: 12px 16px;
+  background: rgba(0,0,0,0.2); border-radius: var(--radius-md);
+  text-align: center;
+}
+
+/* Rating buttons */
+.rating-buttons { width: 100%; }
+.flex { display: flex; }
+.rating-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 14px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-md);
+  cursor: pointer; min-width: 90px;
+  transition: all var(--transition-fast);
+}
+.rating-btn:hover { border-color: var(--brand-primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.rating-icon { font-size: 1.2rem; }
+.rating-label { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+.rating-desc { display: block; }
+
+/* Done screen */
+.review-done {
+  max-width: 480px; margin: 40px auto;
+}
+.done-emoji { font-size: 4rem; display: block; }
+.done-stats {
+  display: flex; justify-content: center; gap: 48px;
+}
+.done-stat { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+/* Create card */
+.create-card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .flashcard-stats-row { grid-template-columns: 1fr 1fr; }
+  .flashcard-word { font-size: 2rem; }
+  .flashcard-3d { height: 260px; }
+}
