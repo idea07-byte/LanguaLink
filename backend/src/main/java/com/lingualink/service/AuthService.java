@@ -23,8 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lingualink.dto.SocialLoginRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,13 +42,18 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException("Email is already in use: " + request.getEmail());
+        String email = request.getEmail() != null ? request.getEmail().toLowerCase().trim() : "";
+        if (!email.endsWith("@gmail.com")) {
+            throw new IllegalArgumentException("Access restricted: Only valid Gmail accounts (@gmail.com) are allowed to register.");
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException("Email is already in use: " + email);
         }
 
         // 1. Create and save User
         User user = User.builder()
-                .email(request.getEmail().toLowerCase().trim())
+                .email(email)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(User.Role.ROLE_USER)
                 .enabled(true)
@@ -119,9 +126,14 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
+        String email = request.getEmail() != null ? request.getEmail().toLowerCase().trim() : "";
+        if (!email.endsWith("@gmail.com")) {
+            throw new IllegalArgumentException("Access restricted: Only valid Gmail accounts (@gmail.com) are allowed to login.");
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail().toLowerCase().trim(),
+                        email,
                         request.getPassword()
                 )
         );
@@ -129,7 +141,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        User user = userRepository.findByEmail(request.getEmail().toLowerCase().trim())
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Profile profile = profileRepository.findByUserId(user.getId())
@@ -157,6 +169,76 @@ public class AuthService {
                 .xp(profile.getXp())
                 .nativeLanguage(nativeLang)
                 .learningLanguages(learningLangs)
+                .role(user.getRole().name())
+                .build();
+
+        return AuthResponse.builder()
+                .token(jwt)
+                .type("Bearer")
+                .user(userProfile)
+                .build();
+    }
+
+    @Transactional
+    public AuthResponse socialLogin(SocialLoginRequest request) {
+        String email = request.getEmail() != null ? request.getEmail().toLowerCase().trim() : "";
+        if (!email.endsWith("@gmail.com")) {
+            throw new IllegalArgumentException("Access restricted: Only verified @gmail.com accounts are allowed to authenticate.");
+        }
+
+        User user = userRepository.findByEmail(email).orElseGet(() -> {
+            User newUser = User.builder()
+                    .email(email)
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
+                    .role(User.Role.ROLE_USER)
+                    .enabled(true)
+                    .build();
+            User saved = userRepository.save(newUser);
+
+            String displayName = request.getName() != null && !request.getName().isBlank()
+                    ? request.getName().trim()
+                    : email.split("@")[0];
+
+            Profile profile = Profile.builder()
+                    .user(saved)
+                    .name(displayName)
+                    .avatarUrl(request.getAvatarUrl())
+                    .level("Beginner")
+                    .streak(1)
+                    .xp(100)
+                    .build();
+            profileRepository.save(profile);
+
+            return saved;
+        });
+
+        Profile profile = profileRepository.findByUserId(user.getId())
+                .orElse(Profile.builder().name(user.getEmail()).build());
+
+        String jwt = jwtUtils.generateTokenFromUsername(user.getEmail());
+
+        List<UserLanguage> userLangs = userLanguageRepository.findByUserId(user.getId());
+        String nativeLang = userLangs.stream()
+                .filter(ul -> ul.getType() == UserLanguage.LanguageType.NATIVE)
+                .map(ul -> ul.getLanguage().getName())
+                .findFirst().orElse("English");
+
+        List<String> learningLangs = userLangs.stream()
+                .filter(ul -> ul.getType() == UserLanguage.LanguageType.LEARNING)
+                .map(ul -> ul.getLanguage().getName())
+                .toList();
+
+        UserProfileResponse userProfile = UserProfileResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(profile.getName())
+                .bio(profile.getBio())
+                .level(profile.getLevel())
+                .avatarUrl(profile.getAvatarUrl())
+                .streak(profile.getStreak())
+                .xp(profile.getXp())
+                .nativeLanguage(nativeLang)
+                .learningLanguages(learningLangs.isEmpty() ? List.of("Spanish") : learningLangs)
                 .role(user.getRole().name())
                 .build();
 

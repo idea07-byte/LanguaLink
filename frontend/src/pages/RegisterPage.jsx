@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth, isGmail } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { fetchLanguages, FALLBACK_LANGUAGES } from '../api/languages'
 import './AuthPages.css'
@@ -27,10 +27,13 @@ export default function RegisterPage() {
 
   const validate = () => {
     const e = {}
-    if (!form.name.trim())       e.name    = 'Full name is required'
-    if (!form.email)             e.email   = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Enter a valid email'
-    if (!form.password)          e.password = 'Password is required'
+    if (!form.name.trim()) e.name = 'Full name is required'
+    if (!form.email) {
+      e.email = 'Gmail address is required'
+    } else if (!isGmail(form.email)) {
+      e.email = 'Access restricted: Only valid Gmail accounts (@gmail.com) can register'
+    }
+    if (!form.password) e.password = 'Password is required'
     else if (form.password.length < 8) e.password = 'Password must be at least 8 characters'
     if (form.password !== form.confirmPassword) e.confirmPassword = 'Passwords do not match'
     if (!form.nativeLanguage)    e.nativeLanguage   = 'Select your native language'

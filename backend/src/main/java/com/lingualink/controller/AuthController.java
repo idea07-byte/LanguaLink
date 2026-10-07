@@ -28,4 +28,10 @@ public class AuthController {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/social")
+    public ResponseEntity<AuthResponse> socialLogin(@Valid @RequestBody com.lingualink.dto.SocialLoginRequest request) {
+        AuthResponse response = authService.socialLogin(request);
+        return ResponseEntity.ok(response);
+    }
 }

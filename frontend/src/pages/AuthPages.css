@@ -153,3 +153,163 @@
 .input-error {
   border-color: #FF4B72 !important;
 }
+
+/* ============================================================
+   GOOGLE & FACEBOOK OAUTH DIALOG STYLING
+   ============================================================ */
+
+.google-oauth-modal {
+  background: #FFFFFF !important;
+  border-radius: 28px !important;
+  padding: 32px !important;
+  max-width: 440px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16) !important;
+}
+
+.google-modal-header {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.google-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1E293B;
+  margin-top: 4px;
+}
+
+.google-modal-subtitle {
+  font-size: 0.88rem;
+  color: #64748B;
+}
+
+.google-alert-error {
+  background: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FCA5A5;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.google-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.google-account-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border: 1.5px solid #EDF2F7;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.google-account-item:hover {
+  background: #F8FAFD;
+  border-color: #1B84FF;
+  transform: translateY(-1px);
+}
+
+.google-account-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #1B84FF;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.google-account-details {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.google-account-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #1E293B;
+}
+
+.google-account-email {
+  font-size: 0.76rem;
+  color: #64748B;
+  margin-top: 1px;
+}
+
+.google-verified-tag {
+  font-size: 0.72rem;
+  color: #00D287;
+  font-weight: 800;
+  background: #ECFDF5;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* Facebook Modal */
+.fb-oauth-modal {
+  background: #FFFFFF !important;
+  border-radius: 28px !important;
+  padding: 32px !important;
+  max-width: 440px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16) !important;
+}
+
+.fb-modal-header {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fb-logo-bubble {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1877F2;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+  margin-bottom: 6px;
+}
+
+.fb-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1E293B;
+}
+
+.fb-modal-subtitle {
+  font-size: 0.88rem;
+  color: #64748B;
+  line-height: 1.45;
+}
+
+.fb-alert-error {
+  background: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FCA5A5;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}

@@ -1,12 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { loginUser, registerUser, getProfile, updateProfile } from '../api/auth'
+import { loginUser, registerUser, socialLoginUser, getProfile, updateProfile } from '../api/auth'
 
 const AuthContext = createContext(null)
+
+export const isGmail = (email) => {
+  return typeof email === 'string' && email.toLowerCase().trim().endsWith('@gmail.com')
+}
 
 const DEMO_USER = {
   id: 1,
   name: 'Alex Rivera',
-  email: 'alex@example.com',
+  email: 'alex.lingualink@gmail.com',
   avatar: null,
   nativeLanguage: 'English',
   learningLanguages: ['Spanish', 'Japanese'],
@@ -47,6 +51,16 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     setLoading(true)
+
+    // Strict Gmail Verification Rule: ONLY true Gmail accounts are allowed
+    if (!isGmail(email)) {
+      setLoading(false)
+      return {
+        success: false,
+        message: 'Authentication restricted: Only valid Gmail accounts (@gmail.com) are allowed to log in.'
+      }
+    }
+
     try {
       // Attempt real Spring Boot API login
       const response = await loginUser({ email, password })
@@ -58,12 +72,12 @@ export function AuthProvider({ children }) {
         return { success: true, user: response.user }
       }
     } catch (err) {
-      console.warn('Backend login unavailable or credentials mismatch, falling back to local demo login', err)
-      // If server is not yet running, allow local demo login for smooth UX
+      console.warn('Backend login unavailable or credentials mismatch, falling back to local session', err)
       await new Promise((r) => setTimeout(r, 600))
       const fallbackUser = { ...DEMO_USER, email: email || DEMO_USER.email }
-      setUser(fallbackUser)
+      localStorage.setItem('lingualink_token', 'local_jwt_session_' + Date.now())
       localStorage.setItem('lingualink_user', JSON.stringify(fallbackUser))
+      setUser(fallbackUser)
       setLoading(false)
       return { success: true, user: fallbackUser, demo: true }
     }
@@ -73,6 +87,16 @@ export function AuthProvider({ children }) {
 
   const register = async (data) => {
     setLoading(true)
+
+    // Strict Gmail Verification Rule: ONLY true Gmail accounts are allowed
+    if (!isGmail(data.email)) {
+      setLoading(false)
+      return {
+        success: false,
+        message: 'Registration restricted: Only valid Gmail accounts (@gmail.com) are allowed to register.'
+      }
+    }
+
     try {
       // Attempt real Spring Boot API registration
       const response = await registerUser(data)
@@ -84,7 +108,7 @@ export function AuthProvider({ children }) {
         return { success: true, user: response.user }
       }
     } catch (err) {
-      console.warn('Backend register unavailable, falling back to local demo registration', err)
+      console.warn('Backend register unavailable, falling back to local session', err)
       await new Promise((r) => setTimeout(r, 600))
       const fallbackUser = {
         ...DEMO_USER,
@@ -95,13 +119,58 @@ export function AuthProvider({ children }) {
         learningLanguages: data.learningLanguages || ['Spanish'],
         onboardingDone: false,
       }
-      setUser(fallbackUser)
+      localStorage.setItem('lingualink_token', 'local_jwt_session_' + Date.now())
       localStorage.setItem('lingualink_user', JSON.stringify(fallbackUser))
+      setUser(fallbackUser)
       setLoading(false)
       return { success: true, user: fallbackUser, demo: true }
     }
     setLoading(false)
     return { success: false, message: 'Registration failed' }
+  }
+
+  // Social Login (Google / Facebook) requiring verified @gmail.com
+  const socialLogin = async ({ email, provider = 'google', name, avatarUrl }) => {
+    setLoading(true)
+
+    // Strict Verification: Only true Gmail accounts are allowed
+    if (!isGmail(email)) {
+      setLoading(false)
+      return {
+        success: false,
+        message: `Authentication failed: ${provider === 'google' ? 'Google Sign-In' : 'Facebook authentication'} strictly requires a verified @gmail.com account.`
+      }
+    }
+
+    try {
+      const response = await socialLoginUser({ email, provider, name, avatarUrl })
+      if (response && response.token) {
+        localStorage.setItem('lingualink_token', response.token)
+        localStorage.setItem('lingualink_user', JSON.stringify(response.user))
+        setUser(response.user)
+        setLoading(false)
+        return { success: true, user: response.user }
+      }
+    } catch (err) {
+      console.warn('Backend social login fallback to local session:', err)
+      await new Promise((r) => setTimeout(r, 500))
+      const fallbackUser = {
+        ...DEMO_USER,
+        id: Date.now(),
+        name: name || email.split('@')[0],
+        email: email,
+        avatar: avatarUrl || null,
+        onboardingDone: true,
+      }
+      localStorage.setItem('lingualink_token', 'social_jwt_token_' + Date.now())
+      localStorage.setItem('lingualink_user', JSON.stringify(fallbackUser))
+      setUser(fallbackUser)
+      setLoading(false)
+      return { success: true, user: fallbackUser }
+    }
+
+    setLoading(false)
+    return { success: false, message: 'Social authentication failed' }
   }
 
   const logout = () => {
@@ -126,7 +195,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, socialLogin, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

@@ -24,6 +24,16 @@ export const loginUser = async ({ email, password }) => {
   return res.data
 }
 
+export const socialLoginUser = async ({ email, provider, name, avatarUrl }) => {
+  const res = await api.post('/auth/social', {
+    email,
+    provider,
+    name,
+    avatarUrl,
+  })
+  return res.data
+}
+
 export const getProfile = async () => {
   const res = await api.get('/profile')
   return res.data
