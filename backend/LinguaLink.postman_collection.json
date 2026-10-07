@@ -1,0 +1,610 @@
+{
+  "info": {
+    "_postman_id": "lingualink-api-collection",
+    "name": "LinguaLink REST & Real-time API Collection",
+    "description": "Comprehensive Postman test collection for LinguaLink (Phases 1-18) covering Authentication, Profile Onboarding, Partner Matching, Connection System, WebSocket/Chat, AI Tutor, SM-2 Flashcards, Dashboard, and Notifications.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Authentication (Phase 5)",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Shyam Sundar\",\n  \"email\": \"shyam@lingualink.com\",\n  \"password\": \"SecurePass123!\",\n  \"nativeLanguage\": \"Tamil\",\n  \"learningLanguages\": [\"English\", \"Spanish\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"shyam@lingualink.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Profile & Onboarding (Phase 6)",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile"]
+            }
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Shyam Sundar\",\n  \"bio\": \"Passionate polyglot learning English and Spanish.\",\n  \"level\": \"Intermediate\",\n  \"avatarUrl\": \"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150\",\n  \"nativeLanguage\": \"Tamil\",\n  \"learningLanguages\": [\"English\", \"Spanish\"],\n  \"interests\": [\"Technology\", \"Cinema\", \"Travel\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile"]
+            }
+          }
+        },
+        {
+          "name": "List Languages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/languages",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Partner Discovery & Matching (Phase 7)",
+      "item": [
+        {
+          "name": "Find Partners (50-20-20-10 Algorithm)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners?language=Spanish&level=Intermediate",
+              "host": ["{{baseUrl}}"],
+              "path": ["partners"],
+              "query": [
+                {
+                  "key": "language",
+                  "value": "Spanish"
+                },
+                {
+                  "key": "level",
+                  "value": "Intermediate"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Partner Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/partners/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["partners", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Follow / Connection System (Phase 8)",
+      "item": [
+        {
+          "name": "Send Connection Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/connections/request/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["connections", "request", "2"]
+            }
+          }
+        },
+        {
+          "name": "Get Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/connections/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["connections", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Accept Connection Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/connections/1/accept",
+              "host": ["{{baseUrl}}"],
+              "path": ["connections", "1", "accept"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Conversations & Messages (Phase 9)",
+      "item": [
+        {
+          "name": "List User Conversations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversations",
+              "host": ["{{baseUrl}}"],
+              "path": ["conversations"]
+            }
+          }
+        },
+        {
+          "name": "Get Messages in Conversation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversations/1/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["conversations", "1", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Start Direct Conversation with Partner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversations/direct/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["conversations", "direct", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. AI Tutor & Grammar (Phases 10-13)",
+      "item": [
+        {
+          "name": "Check Grammar (Phase 11)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sentence\": \"I didn't went to college.\",\n  \"targetLanguage\": \"English\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/grammar",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "grammar"]
+            }
+          }
+        },
+        {
+          "name": "AI Conversation Practice (Phase 12)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"I go to college and meet my friend yesterday.\",\n  \"targetLanguage\": \"English\",\n  \"difficulty\": \"Intermediate\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/practice",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "practice"]
+            }
+          }
+        },
+        {
+          "name": "AI Flashcard Generation (Phase 13)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"topic\": \"Airport & Travel\",\n  \"count\": 5,\n  \"targetLanguage\": \"Spanish\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ai/flashcards",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "flashcards"]
+            }
+          }
+        },
+        {
+          "name": "Get User Past Corrections",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ai/corrections",
+              "host": ["{{baseUrl}}"],
+              "path": ["ai", "corrections"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. SM-2 Flashcards Learning (Phase 14)",
+      "item": [
+        {
+          "name": "Get User Flashcards",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcards",
+              "host": ["{{baseUrl}}"],
+              "path": ["flashcards"]
+            }
+          }
+        },
+        {
+          "name": "Get Due Flashcards Today",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcards/due",
+              "host": ["{{baseUrl}}"],
+              "path": ["flashcards", "due"]
+            }
+          }
+        },
+        {
+          "name": "Create Flashcard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"front\": \"Madrugada\",\n  \"back\": \"The early hours of the morning, just before dawn\",\n  \"example\": \"Me desperté en la madrugada y no pude dormir.\",\n  \"language\": \"Spanish\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flashcards",
+              "host": ["{{baseUrl}}"],
+              "path": ["flashcards"]
+            }
+          }
+        },
+        {
+          "name": "Review Flashcard (SM-2 Spaced Repetition)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": \"GOOD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flashcards/1/review",
+              "host": ["{{baseUrl}}"],
+              "path": ["flashcards", "1", "review"]
+            }
+          }
+        },
+        {
+          "name": "Get Flashcard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcards/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["flashcards", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Dashboard & Notifications (Phases 15-16)",
+      "item": [
+        {
+          "name": "Get Consolidated Dashboard Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Get User Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"]
+            }
+          }
+        },
+        {
+          "name": "Get Unread Notifications Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/unread-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "unread-count"]
+            }
+          }
+        },
+        {
+          "name": "Mark All Notifications As Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/read-all",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "read-all"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
