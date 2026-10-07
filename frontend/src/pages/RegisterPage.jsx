@@ -1,15 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import { fetchLanguages, FALLBACK_LANGUAGES } from '../api/languages'
 import './AuthPages.css'
-
-const LANGUAGES = ['English','Spanish','French','German','Japanese','Korean','Mandarin','Italian','Portuguese','Arabic','Hindi','Russian']
 
 export default function RegisterPage() {
   const { register, loading } = useAuth()
   const { addToast } = useToast()
   const navigate = useNavigate()
+
+  const [languages, setLanguages] = useState(FALLBACK_LANGUAGES)
+
+  useEffect(() => {
+    fetchLanguages().then(list => {
+      if (list && list.length > 0) setLanguages(list)
+    })
+  }, [])
 
   const [form, setForm] = useState({
     name: '', email: '', password: '', confirmPassword: '',
@@ -105,8 +112,8 @@ export default function RegisterPage() {
             <label className="form-label">Native language</label>
             <select id="reg-native" className={`form-input ${errors.nativeLanguage ? 'input-error' : ''}`}
               value={form.nativeLanguage} onChange={handleChange('nativeLanguage')} style={{ cursor: 'pointer' }}>
-              <option value="">Select…</option>
-              {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
+              <option value="">Select your native language…</option>
+              {languages.map(l => <option key={l.code || l.id} value={l.name}>{l.flag ? `${l.flag} ` : ''}{l.name} ({l.code})</option>)}
             </select>
             {errors.nativeLanguage && <span className="form-error">{errors.nativeLanguage}</span>}
           </div>
@@ -114,8 +121,10 @@ export default function RegisterPage() {
             <label className="form-label">Learning language</label>
             <select id="reg-learning" className={`form-input ${errors.learningLanguage ? 'input-error' : ''}`}
               value={form.learningLanguage} onChange={handleChange('learningLanguage')} style={{ cursor: 'pointer' }}>
-              <option value="">Select…</option>
-              {LANGUAGES.filter(l => l !== form.nativeLanguage).map(l => <option key={l} value={l}>{l}</option>)}
+              <option value="">Select a language to learn…</option>
+              {languages.filter(l => l.name !== form.nativeLanguage).map(l => (
+                <option key={l.code || l.id} value={l.name}>{l.flag ? `${l.flag} ` : ''}{l.name} ({l.code})</option>
+              ))}
             </select>
             {errors.learningLanguage && <span className="form-error">{errors.learningLanguage}</span>}
           </div>

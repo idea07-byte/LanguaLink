@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import { fetchLanguages, FALLBACK_LANGUAGES } from '../api/languages'
 import './ProfilePage.css'
 
-const LANGUAGES = ['English','Spanish','French','German','Japanese','Korean','Mandarin','Italian','Portuguese','Arabic','Hindi','Russian']
 const LEVELS = ['Beginner','Elementary','Pre-Intermediate','Intermediate','Upper-Intermediate','Advanced']
 
 const ACTIVITY = [
@@ -29,6 +29,13 @@ export default function ProfilePage() {
   const { user, updateUser } = useAuth()
   const { addToast } = useToast()
   const [editing, setEditing] = useState(false)
+  const [languages, setLanguages] = useState(FALLBACK_LANGUAGES)
+
+  useEffect(() => {
+    fetchLanguages().then(list => {
+      if (list && list.length > 0) setLanguages(list)
+    })
+  }, [])
   const [form, setForm] = useState({
     name: user?.name || '',
     bio: user?.bio || 'Language enthusiast passionate about connecting with people around the world through conversation.',
@@ -151,7 +158,11 @@ export default function ProfilePage() {
                     key === 'nativeLanguage' ? (
                       <select className="form-input" style={{ maxWidth:180, padding:'6px 10px', height:34 }}
                         value={form[key]} onChange={e => setForm(p => ({...p, [key]: e.target.value}))}>
-                        {LANGUAGES.map(l => <option key={l}>{l}</option>)}
+                        {languages.map(l => (
+                          <option key={l.code || l.id} value={l.name}>
+                            {l.flag ? `${l.flag} ` : ''}{l.name}
+                          </option>
+                        ))}
                       </select>
                     ) : key === 'level' ? (
                       <select className="form-input" style={{ maxWidth:200, padding:'6px 10px', height:34 }}
