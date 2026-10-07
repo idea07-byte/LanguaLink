@@ -1,0 +1,26 @@
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Java / Maven / Backend
+backend/target/
+backend/.mvn/
+backend/*.log
+
+# Environment & Secrets (Phase 17 Security)
+.env
+.env*.local
+*.env
+backend/.env
+frontend/.env
+application-secrets.properties
+application-local.properties
+!.env.example
+
+# IDE & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
